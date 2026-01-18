@@ -157,6 +157,7 @@ namespace BossRush
     {
         public static void Postfix(LevelStatsEnabler __instance)
         {
+            BossRush.BepInExLogger.LogInfo("LevelStatsEnabler Start called");
             BossRushStats.UK_LevelStatsObject = __instance.transform.GetChild(0).gameObject;
         }
     }
@@ -209,17 +210,24 @@ namespace BossRush
             GameObject chapterSelectObject = canvasRectTransform.Find("Chapter Select").gameObject;
             if (chapterSelectObject == null)
             {
-                Debug.LogError("Chapter Select object is null");
+                BossRush.BepInExLogger.LogError("Chapter Select object is null");
+                return;
+            }
+
+            GameObject chaptersObject = chapterSelectObject.transform.Find("Chapters").gameObject;
+            if (chaptersObject == null)
+            {
+                BossRush.BepInExLogger.LogError("Chapters object is null");
                 return;
             }
 
             BossRushMenu.SetLastPage(chapterSelectObject);
-            RectTransform chapterSelectRectTransform = chapterSelectObject.GetComponent<RectTransform>();
-            GameObject sandboxButtonObject = chapterSelectObject.transform.Find("Sandbox").gameObject;
+            RectTransform chapterSelectRectTransform = chaptersObject.GetComponent<RectTransform>();
+            GameObject sandboxButtonObject = chaptersObject.transform.Find("Sandbox").gameObject;
 
             if (sandboxButtonObject == null)
             {
-                Debug.LogError("Sandbox button is null");
+                BossRush.BepInExLogger.LogError("Sandbox button is null");
                 return;
             }
 

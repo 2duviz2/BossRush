@@ -3,6 +3,7 @@ using BepInEx.Logging;
 using BossRush.UI;
 using HarmonyLib;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace BossRush
 {
@@ -20,6 +21,7 @@ namespace BossRush
         private void Awake()
         {
             Instance = this;
+            SceneManager.sceneLoaded += OnSceneLoad;
             BossRushConfig.Bind();
 
             BossRushPaths.CheckFolders();
@@ -29,11 +31,16 @@ namespace BossRush
             harmony = new Harmony(ConstInfo.GUID + ".harmony");
             harmony.PatchAll();
             Assets.LoadAssets();
-            BossRushStats.Spawn();
 
             VersionCheck.CheckVersion(ConstInfo.GITHUB_URL, ConstInfo.VERSION, VersionCheckCallback);
 
             Logger.LogInfo($"Boss Rush {ConstInfo.VERSION} loaded!");
+        }
+
+        private void OnSceneLoad(Scene _, LoadSceneMode __)
+        {
+            if (BossRushStats.Instance == null)
+                BossRushStats.Spawn();
         }
 
         private void Update()

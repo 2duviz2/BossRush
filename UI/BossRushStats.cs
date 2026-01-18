@@ -11,6 +11,7 @@ namespace BossRush.UI
         [SerializeField] private GameObject newScoreFlash;
 
         internal static GameObject UK_LevelStatsObject;
+        public static BossRushStats Instance;
 
         private void Start()
         {
@@ -122,7 +123,9 @@ namespace BossRush.UI
             if (Assets.BossRushStatsPrefab == null)
                 return;
 
-            Instantiate(Assets.BossRushStatsPrefab);
+            GameObject obj = Instantiate(Assets.BossRushStatsPrefab);
+            DontDestroyOnLoad(obj);
+            Instance = obj.GetComponent<BossRushStats>();
         }
 
     }
